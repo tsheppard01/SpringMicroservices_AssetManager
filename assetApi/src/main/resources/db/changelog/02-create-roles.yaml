@@ -1,0 +1,40 @@
+databaseChangeLog:
+- changeSet:
+    id: 20200708_2
+    author: tsheppard01
+    changes:
+    - sql:
+      comment: create app_user role
+      sql: CREATE ROLE app_user_role;
+    - sql:
+      comment: grant usage to demo_app to app_user_role
+      sql: GRANT USAGE ON SCHEMA assets TO app_user_role;
+    - sql:
+      comment: grant tables access to app_user_role
+      sql: GRANT SELECT, INSERT, DELETE, UPDATE ON ALL TABLES IN SCHEMA assets TO app_user_role;
+    - sql:
+      comment: grant sequences access to app_user_role
+      sql: GRANT SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA assets TO app_user_role;
+    - sql:
+      comment: grant future tables access to app_user_role
+      sql: ALTER DEFAULT PRIVILEGES IN SCHEMA assets GRANT SELECT, INSERT, DELETE, UPDATE ON TABLES TO app_user_role;
+    - sql:
+      comment: grant future sequences access to app_user_role
+      sql: ALTER DEFAULT PRIVILEGES IN SCHEMA assets GRANT SELECT, UPDATE ON SEQUENCES TO app_user_role;
+    - rollback:
+      - sql:
+        comment: revoke acces to app_user
+        sql: REVOKE USAGE ON SCHEMA assets FROM app_user_role;
+      - sql:
+        comment: revoke tables access to app_user_role
+        sql: REVOKE  SELECT, INSERT, DELETE, UPDATE ON ALL TABLES IN SCHEMA assets FROM app_user_role;
+      - sql:
+        comment: revoke sequences access to app_user_role
+        sql: REVOKE SELECT,UPDATE ON ALL SEQUENCES IN SCHEMA assets FROM app_user_role;
+      - sql:
+        comment: alter default privieges to revoke tables access from app_user_role
+        sql: ALTER DEFAULT PRIVILEGES IN SCHEMA assets REVOKE SELECT, INSERT, DELETE, UPDATE ON TABLES FROM app_user_role;
+      - sql:
+        comment: alter default privieges to revoke sequences access app_user_role
+        sql: ALTER DEFAULT PRIVILEGES IN SCHEMA assets REVOKE SELECT, UPDATE ON SEQUENCES FROM app_user_role;
+

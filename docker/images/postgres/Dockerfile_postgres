@@ -1,0 +1,8 @@
+FROM postgres:13
+
+USER $POSTGRES_USER
+
+RUN mkdir -p /data/dbdata
+
+RUN chown -R postgres /data
+RUN chmod 700 /data

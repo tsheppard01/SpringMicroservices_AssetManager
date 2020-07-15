@@ -1,0 +1,22 @@
+databaseChangeLog:
+- include:
+    relativeToChangelogFile: true
+    file: 01-create-schema.yaml
+- include:
+    relativeToChangelogFile: true
+    file: 02-create-roles.yaml
+- include:
+    relativeToChangelogFile: true
+    file: 03-enable-uuid.yaml
+- include:
+    relativeToChangelogFile: true
+    file: 04-create-asset-category.yaml
+- include:
+    relativeToChangelogFile: true
+    file: 05-create-asset-type.yaml
+- include:
+    relativeToChangelogFile: true
+    file: 06-create-asset.yaml
+- include:
+    relativeToChangelogFile: true
+    file: 07-add-description-asset-type.yaml

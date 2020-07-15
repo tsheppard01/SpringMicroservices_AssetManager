@@ -1,0 +1,21 @@
+databaseChangeLog:
+- changeSet:
+    id: 20200709_4
+    author: tsheppard01
+    changes:
+      - createTable:
+          tableName: asset_category
+          schemaName: assets
+          columns:
+          - column:
+              name: id
+              type: uuid
+              defaultValueComputed: uuid_generate_v4()
+              constraints:
+                primaryKey: true
+                nullable: false
+          - column:
+              name: name
+              type: text
+              constraints:
+                nullable: false

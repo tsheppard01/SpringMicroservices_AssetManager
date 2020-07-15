@@ -1,0 +1,15 @@
+version: "3"
+services:
+
+  assets_db:
+    build:
+      context: "./images/postgres"
+      dockerfile: Dockerfile_postgres
+    container_name: assetsdb
+    ports:
+      - "54321:5432"
+    environment:
+      POSTGRES_USER: "$ASSETS_DB_USERNAME"
+      POSTGRES_PASSWORD: "$ASSETS_DB_PASSWORD"
+      POSTGRES_DB: "$ASSETS_DB_NAME"
+      PGDATA: /pgdata/assetsdb

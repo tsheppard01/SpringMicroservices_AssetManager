@@ -1,0 +1,14 @@
+databaseChangeLog:
+- changeSet:
+    id: 20200710_2
+    author: tsheppard01
+    changes:
+    - addColumn:
+        tableName: asset_type
+        schemaName: assets
+        columns:
+        - column:
+            name: description
+            type: text
+            constraints:
+              nullable: false
