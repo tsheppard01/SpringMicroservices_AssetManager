@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -24,12 +25,11 @@ public class AssetTypeService {
 
     return assetTypeRepository.findAll()
         .stream()
-        .map(at ->
-            new AssetTypeDto(
-                at.getId(),
-                at.getName(),
-                at.getDescription(),
-                at.getAssetCategory().getName()
+        .map(at -> new AssetTypeDto(
+            at.getId(),
+            at.getName(),
+            at.getDescription(),
+            at.getAssetCategory().getName()
             )
         ).collect(Collectors.toList());
   }
@@ -46,5 +46,21 @@ public class AssetTypeService {
                 a.getAssetType().getDescription(),
                 a.getAssetType().getAssetCategory().getName()
             )).collect(Collectors.toList());
+  }
+
+  public AssetTypeDto getAssetType(UUID assetTypeId) {
+
+    return assetTypeRepository
+        .findById(assetTypeId)
+        .map( at ->
+            new AssetTypeDto(
+                at.getId(),
+                at.getName(),
+                at.getDescription(),
+                at.getAssetCategory().getName()
+            )
+        ).orElseThrow(() ->
+            new IllegalArgumentException("Unable to find AssetType with Id:" + assetTypeId)
+        );
   }
 }

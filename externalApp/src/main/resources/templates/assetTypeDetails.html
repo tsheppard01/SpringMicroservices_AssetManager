@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Asset Type Details</title>
+</head>
+<body>
+<h1>Asset to Request</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Category</th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td th:text="${assetType.name}"></td>
+            <td th:text="${assetType.description}"></td>
+            <td th:text="${assetType.category}"></td>
+        </tr>
+    </tbody>
+</table>
+
+<form th:action="@{/assetTypes/request}" th:object="${assetRequest}" method="post">
+    <input type="hidden" th:value="${assetType.id}" th:attr="name='id'" />
+    <button type="submit">Make Request</button>
+</form>
+
+</body>
+</html>

@@ -8,6 +8,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class AssetsService {
@@ -20,5 +21,9 @@ public class AssetsService {
     return Arrays.asList(
             restTemplate.getForObject("http://asset-api/assetTypes", AssetTypeDto[].class)
         );
+  }
+
+  public AssetTypeDto getAssetType(UUID assetTypeId) {
+    return restTemplate.getForObject("http://asset-api/assetTypes/" + assetTypeId, AssetTypeDto.class);
   }
 }

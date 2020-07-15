@@ -19,6 +19,9 @@
             <td th:text="${assetType.name}"></td>
             <td th:text="${assetType.description}"></td>
             <td th:text="${assetType.category}"></td>
+            <td>
+                <a th:href="@{/assetTypes/{id}(id=${assetType.id})}">View Details</a>
+            </td>
         </tr>
     </th:block>
     </tbody>
