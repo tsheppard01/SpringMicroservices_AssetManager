@@ -1,6 +1,5 @@
 package com.tsheppard01.assetmanager.assetrequest.services;
 
-import com.tsheppard01.assetmanager.assetrequest.dto.AssetRequestDto;
 import com.tsheppard01.assetmanager.assetrequest.dto.RequestDto;
 import com.tsheppard01.assetmanager.assetrequest.dto.RequestItemDto;
 import com.tsheppard01.assetmanager.assetrequest.dto.RequestSummaryDto;
@@ -27,32 +26,6 @@ public class RequestService {
 
   @Autowired
   RequestItemRepository requestItemRepository;
-
-  @Transactional
-  public UUID addItemToRequest(AssetRequestDto assetRequestDto) {
-
-    List<RequestItem> items = assetRequestDto.getItems().stream().map(dto ->
-        new RequestItem(
-            dto.getId(),
-            dto.getAssetTypeId(),
-            dto.getComments()
-          )
-        ).collect(Collectors.toList());
-
-    Request request = new Request(
-        assetRequestDto.getId(),
-        assetRequestDto.getUserId(),
-        RequestStatus.valueOf(assetRequestDto.getStatus()),
-        Timestamp.valueOf(LocalDateTime.now()),
-        items
-    );
-
-    request.getRequestItems().forEach(i -> i.setRequest(request));
-
-    Request addedRequest = requestRepository.saveAndFlush(request);
-
-    return addedRequest.getId();
-  }
 
   @Transactional
   public UUID addItemToRequest(UUID requestId, RequestItemDto requestItemDto) {

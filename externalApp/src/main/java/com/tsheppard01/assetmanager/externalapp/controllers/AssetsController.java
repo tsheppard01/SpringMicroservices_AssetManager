@@ -1,13 +1,13 @@
 package com.tsheppard01.assetmanager.externalapp.controllers;
 
-import com.tsheppard01.assetmanager.externalapp.dto.AddRequestItemDto;
 import com.tsheppard01.assetmanager.externalapp.dto.AssetTypeDto;
 import com.tsheppard01.assetmanager.externalapp.services.AssetsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 import java.util.UUID;
@@ -39,11 +39,5 @@ public class AssetsController {
 
     AssetTypeDto assetType = assetsService.getAssetType(assetTypeId);
     return new ModelAndView("assetTypeDetails", "assetType", assetType);
-  }
-
-  @PostMapping("/assetTypes/request")
-  public RedirectView orderAsset(@ModelAttribute AddRequestItemDto addItemRequest) {
-    assetsService.addItemToRequest(addItemRequest);
-    return new RedirectView("/assetTypes");
   }
 }

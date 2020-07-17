@@ -24,13 +24,6 @@
     </tbody>
 </table>
 
-<form th:action="@{/assetTypes/request}" th:object="${assetRequest}" method="post">
-    <input type="hidden" th:value="${assetType.id}" th:attr="name='assetTypeId'" />
-    <input type="hidden" value="5fd997a7-bb64-4bd0-a213-6e15d76bcfc0" name="userId" />
-    <input type="hidden" value="I have some comments" name="comments" />
-    <button type="submit">Make Request</button>
-</form>
-
 <form th:action="@{/requests/{rid}/addItem(rid=${#request.getParameter('rid')})}" th:object="${requestItem}" method="post">
     <input type="hidden" th:value="${assetType.id}" th:attr="name='assetTypeId'" />
     <input type="hidden" value="I have some comments" name="comments" />
