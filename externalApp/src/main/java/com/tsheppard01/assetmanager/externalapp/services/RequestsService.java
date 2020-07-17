@@ -1,18 +1,24 @@
 package com.tsheppard01.assetmanager.externalapp.services;
 
-import com.tsheppard01.assetmanager.externalapp.dto.RequestItemDto;
-import com.tsheppard01.assetmanager.externalapp.dto.UuidWrapperDto;
+import com.tsheppard01.assetmanager.externalapp.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 public class RequestsService {
 
   @Autowired
   private RestTemplate restTemplate;
+
+  @Autowired
+  private AssetsService assetsService;
 
   public UUID createNewRequest(UUID userId) {
 
@@ -39,4 +45,40 @@ public class RequestsService {
 
     return requestItemId.getId();
   }
+
+  public List<RequestSummaryDto> getRequestsForUser(UUID userId) {
+
+    RequestSummaryDto[] requestSummaryDtos =
+        restTemplate
+            .getForObject(
+                "http://asset-requests-api/requests/users/" + userId,
+                RequestSummaryDto[].class
+            );
+
+    return Arrays.asList(requestSummaryDtos);
+  }
+
+  public RequestDetailsDto getRequestDetails(UUID requestId) {
+
+    RequestDto request = restTemplate
+        .getForObject("http://asset-requests-api/requests/" + requestId,
+            RequestDto.class
+        );
+
+    List<RequestItemDetailsDto> assets = request.getItems().stream()
+        .map(i -> {
+          AssetTypeDto asset = assetsService.getAssetType(i.getAssetTypeId());
+          System.out.println(asset);
+          return new RequestItemDetailsDto(asset.getName(), asset.getCategory(), i.getComment());
+        }).collect(Collectors.toList());
+
+    return
+        new RequestDetailsDto(
+            request.getId(),
+            request.getStatus(),
+            request.getDateTimeCreated(),
+            assets
+        );
+  }
+
 }

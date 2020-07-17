@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+
+<h1>Existing Requests</h1>
+<table>
+    <thead>
+    <tr>
+        <td>Reference Id</td>
+        <td>Status</td>
+        <td>Date Created</td>
+    </tr>
+    </thead>
+    <tbody>
+    <th:block block th:each="request : ${requests}">
+        <tr>
+            <td>
+                <a th:text="${request.id}" th:href="@{/requests/{id}(id=${request.id})}"></a>
+            </td>
+            <td th:text="${request.status}"></td>
+            <td th:text="${request.dateTimeCreated}"></td>
+        </tr>
+    </th:block>
+    </tbody>
+</table>

@@ -1,7 +1,9 @@
 package com.tsheppard01.assetmanager.assetrequest.services;
 
 import com.tsheppard01.assetmanager.assetrequest.dto.AssetRequestDto;
+import com.tsheppard01.assetmanager.assetrequest.dto.RequestDto;
 import com.tsheppard01.assetmanager.assetrequest.dto.RequestItemDto;
+import com.tsheppard01.assetmanager.assetrequest.dto.RequestSummaryDto;
 import com.tsheppard01.assetmanager.assetrequest.entities.Request;
 import com.tsheppard01.assetmanager.assetrequest.entities.RequestItem;
 import com.tsheppard01.assetmanager.assetrequest.entities.RequestStatus;
@@ -84,5 +86,40 @@ public class RequestService {
         );
 
     return addedRequest.getId();
+  }
+
+  public List<RequestSummaryDto> getRequestsSummaryForUserId(UUID userId) {
+
+    return requestRepository.findAllByUserId(userId)
+        .stream().map(r ->
+            new RequestSummaryDto(
+                r.getId(),
+                r.getUserId(),
+                r.getStatus().toString(),
+                r.getDateTimeCreated().toLocalDateTime()
+            )
+        ).collect(Collectors.toList());
+  }
+
+  public RequestDto getRequestDetails(UUID requestId) {
+
+    return
+    requestRepository.findById(requestId)
+        .map(r ->
+            new RequestDto(
+                r.getId(),
+                r.getUserId(),
+                r.getStatus().toString(),
+                r.getDateTimeCreated().toLocalDateTime(),
+                r.getRequestItems().stream().map(ri ->
+                    new RequestItemDto(
+                        ri.getId(),
+                        ri.getAssetTypeId(),
+                        ri.getComment()
+                    )
+                ).collect(Collectors.toList()))
+        ).orElseThrow(() ->
+          new IllegalArgumentException("Error retrieving request with Id:" + requestId)
+      );
   }
 }

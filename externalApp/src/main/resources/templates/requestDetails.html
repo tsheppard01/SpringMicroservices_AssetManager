@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+
+<h1>Request Details</h1>
+
+<div th:text="${requestDetails.id}"></div>
+<div th:text="${requestDetails.status}"></div>
+<div th:text="${requestDetails.dateTimeCreated}"></div>
+<table>
+    <thead>
+    <tr>
+        <td>Asset Name</td>
+        <td>Asset Category</td>
+        <td>Comments</td>
+    </tr>
+    </thead>
+    <tbody>
+    <th:block block th:each="item : ${requestDetails.items}">
+        <tr>
+            <td th:text="${item.name}"></td>
+            <td th:text="${item.category}"></td>
+            <td th:text="${item.comment}"></td>
+        </tr>
+    </th:block>
+    </tbody>
+</table>
+
+<form method="post">
+    <button type="submit">Submit Request</button>
+</form>

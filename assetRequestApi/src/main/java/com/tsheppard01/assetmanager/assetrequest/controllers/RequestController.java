@@ -1,8 +1,6 @@
 package com.tsheppard01.assetmanager.assetrequest.controllers;
 
-import com.tsheppard01.assetmanager.assetrequest.dto.AssetRequestDto;
-import com.tsheppard01.assetmanager.assetrequest.dto.RequestItemDto;
-import com.tsheppard01.assetmanager.assetrequest.dto.UuidWrapperDto;
+import com.tsheppard01.assetmanager.assetrequest.dto.*;
 import com.tsheppard01.assetmanager.assetrequest.entities.Request;
 import com.tsheppard01.assetmanager.assetrequest.repository.RequestRepository;
 import com.tsheppard01.assetmanager.assetrequest.services.RequestService;
@@ -12,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.Path;
+import javax.xml.ws.Response;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,6 +40,24 @@ public class RequestController {
         new UuidWrapperDto(
             requestService.createRequest(userId.getId())
         ),
+        HttpStatus.OK
+    );
+  }
+
+  @RequestMapping("requests/users/{userId}")
+  public ResponseEntity<List<RequestSummaryDto>> getUserRequestsSummary(@PathVariable(name = "userId") UUID userId) {
+
+    return new ResponseEntity<>(
+        requestService.getRequestsSummaryForUserId(userId),
+        HttpStatus.OK
+    );
+  }
+
+  @RequestMapping("requests/{requestId}")
+  public ResponseEntity<RequestDto> getRequestDetails(@PathVariable(name = "requestId") UUID requestId) {
+
+    return new ResponseEntity<>(
+        requestService.getRequestDetails(requestId),
         HttpStatus.OK
     );
   }

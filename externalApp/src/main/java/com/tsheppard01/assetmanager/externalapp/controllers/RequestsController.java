@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.UUID;
@@ -17,6 +18,26 @@ public class RequestsController {
 
   @Autowired
   private RequestsService requestsService;
+
+  @RequestMapping("/requests")
+  public ModelAndView viewRequests() {
+
+    return new ModelAndView(
+        "requests",
+        "requests",
+        requestsService.getRequestsForUser(userId)
+    );
+  }
+
+  @RequestMapping("/requests/{requestId}")
+  public ModelAndView viewRequestDetails(@PathVariable(name = "requestId") UUID requestId) {
+
+    return new ModelAndView(
+        "requestDetails",
+        "requestDetails",
+        requestsService.getRequestDetails(requestId)
+    );
+  }
 
   @PostMapping("/requests/create")
   public ModelAndView createNewRequest() {
