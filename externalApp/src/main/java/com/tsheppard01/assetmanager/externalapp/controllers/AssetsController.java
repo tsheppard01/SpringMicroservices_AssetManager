@@ -5,10 +5,7 @@ import com.tsheppard01.assetmanager.externalapp.dto.AssetTypeDto;
 import com.tsheppard01.assetmanager.externalapp.services.AssetsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -29,7 +26,7 @@ public class AssetsController {
   }
 
   @RequestMapping("/assetTypes")
-  public ModelAndView getAllAssetTypes() {
+  public ModelAndView getAllAssetTypes(@RequestParam(name = "rid") UUID requestId) {
 
     List<AssetTypeDto> assetTypes = assetsService.getAllAssetTypes();
 
@@ -37,7 +34,8 @@ public class AssetsController {
   }
 
   @RequestMapping("/assetTypes/{assetTypeId}")
-  public ModelAndView getAssetType(@PathVariable(value = "assetTypeId") UUID assetTypeId) {
+  public ModelAndView getAssetType(@PathVariable(value = "assetTypeId") UUID assetTypeId,
+                                   @RequestParam(name = "rid") UUID requestId) {
 
     AssetTypeDto assetType = assetsService.getAssetType(assetTypeId);
     return new ModelAndView("assetTypeDetails", "assetType", assetType);
@@ -45,7 +43,6 @@ public class AssetsController {
 
   @PostMapping("/assetTypes/request")
   public RedirectView orderAsset(@ModelAttribute AddRequestItemDto addItemRequest) {
-    System.out.println(addItemRequest.toString());
     assetsService.addItemToRequest(addItemRequest);
     return new RedirectView("/assetTypes");
   }

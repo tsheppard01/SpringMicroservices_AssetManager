@@ -20,7 +20,7 @@
             <td th:text="${assetType.description}"></td>
             <td th:text="${assetType.category}"></td>
             <td>
-                <a th:href="@{/assetTypes/{id}(id=${assetType.id})}">View Details</a>
+                <a th:href="@{/assetTypes/{id}(id=${assetType.id}, rid=${#request.getParameter('rid')})}">View Details</a>
             </td>
         </tr>
     </th:block>

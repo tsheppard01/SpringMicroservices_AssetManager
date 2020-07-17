@@ -1,9 +1,11 @@
 package com.tsheppard01.assetmanager.assetrequest.services;
 
 import com.tsheppard01.assetmanager.assetrequest.dto.AssetRequestDto;
+import com.tsheppard01.assetmanager.assetrequest.dto.RequestItemDto;
 import com.tsheppard01.assetmanager.assetrequest.entities.Request;
 import com.tsheppard01.assetmanager.assetrequest.entities.RequestItem;
 import com.tsheppard01.assetmanager.assetrequest.entities.RequestStatus;
+import com.tsheppard01.assetmanager.assetrequest.repository.RequestItemRepository;
 import com.tsheppard01.assetmanager.assetrequest.repository.RequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,6 +22,9 @@ public class RequestService {
 
   @Autowired
   RequestRepository requestRepository;
+
+  @Autowired
+  RequestItemRepository requestItemRepository;
 
   @Transactional
   public UUID addItemToRequest(AssetRequestDto assetRequestDto) {
@@ -45,6 +50,26 @@ public class RequestService {
     Request addedRequest = requestRepository.saveAndFlush(request);
 
     return addedRequest.getId();
+  }
+
+  @Transactional
+  public UUID addItemToRequest(UUID requestId, RequestItemDto requestItemDto) {
+
+    return
+        requestRepository
+            .findById(requestId)
+            .map(request ->
+                new RequestItem(
+                    requestItemDto.getAssetTypeId(),
+                    requestItemDto.getComment(),
+                    request
+                )
+            ).map(request ->
+                requestItemRepository.saveAndFlush(request)
+            ).map(RequestItem::getId)
+            .orElseThrow(() ->
+                new IllegalArgumentException("Error retrieving request with Id:" + requestId)
+            );
   }
 
   public UUID createRequest(UUID userId) {

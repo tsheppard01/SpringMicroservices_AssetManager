@@ -31,5 +31,12 @@
     <button type="submit">Make Request</button>
 </form>
 
+<form th:action="@{/requests/{rid}/addItem(rid=${#request.getParameter('rid')})}" th:object="${requestItem}" method="post">
+    <input type="hidden" th:value="${assetType.id}" th:attr="name='assetTypeId'" />
+    <input type="hidden" value="I have some comments" name="comments" />
+    <button type="submit">Add Item to Request</button>
+</form>
+
+
 </body>
 </html>

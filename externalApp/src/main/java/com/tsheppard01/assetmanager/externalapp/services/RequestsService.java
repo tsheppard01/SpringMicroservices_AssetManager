@@ -1,5 +1,6 @@
 package com.tsheppard01.assetmanager.externalapp.services;
 
+import com.tsheppard01.assetmanager.externalapp.dto.RequestItemDto;
 import com.tsheppard01.assetmanager.externalapp.dto.UuidWrapperDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,7 +16,7 @@ public class RequestsService {
 
   public UUID createNewRequest(UUID userId) {
 
-    UuidWrapperDto requestId =
+      UuidWrapperDto requestId =
         restTemplate
             .postForObject(
                 "http://asset-requests-api/requests/create",
@@ -24,5 +25,18 @@ public class RequestsService {
             );
 
     return requestId.getId();
+  }
+
+  public UUID addItemToRequest(UUID requestId, RequestItemDto requestItemDto) {
+
+    UuidWrapperDto requestItemId =
+        restTemplate
+            .postForObject(
+                "http://asset-requests-api/requests/" + requestId + "/addItem",
+                requestItemDto,
+                UuidWrapperDto.class
+            );
+
+    return requestItemId.getId();
   }
 }

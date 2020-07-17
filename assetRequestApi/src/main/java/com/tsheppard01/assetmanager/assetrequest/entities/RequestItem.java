@@ -12,10 +12,16 @@ public class RequestItem {
 
   public RequestItem() {}
 
-  public RequestItem(UUID id, UUID assetTypeId, String itemComment) {
+  public RequestItem(UUID assetTypeId, String comment, Request request) {
+    this.assetTypeId = assetTypeId;
+    this.comment = comment;
+    this.request = request;
+  }
+
+  public RequestItem(UUID id, UUID assetTypeId, String comment) {
     this.id = id;
     this.assetTypeId = assetTypeId;
-    this.itemComment = itemComment;
+    this.comment = comment;
   }
 
   @Id
@@ -27,7 +33,7 @@ public class RequestItem {
   private UUID assetTypeId;
 
   @Column(name = "comment")
-  private String itemComment;
+  private String comment;
 
   @ManyToOne(optional = false)
   @JoinColumn(name = "request_id")
