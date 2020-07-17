@@ -1,0 +1,12 @@
+databaseChangeLog:
+- changeSet:
+    id: 20200715_1
+    author: tsheppard01
+    runInTransaction: false
+    changes:
+    - sql:
+      comment: create the application schema
+      sql: CREATE SCHEMA asset_requests;
+    - rollback:
+        comment: drop the application schema
+        sql: DROP SCHEMA asset_requests;

@@ -1,0 +1,32 @@
+databaseChangeLog:
+- changeSet:
+    id: 20200716_3
+    author: tsheppard01
+    changes:
+      - createTable:
+          tableName: request_item
+          schemaName: asset_requests
+          columns:
+          - column:
+              name: id
+              type: uuid
+              defaultValueComputed: uuid_generate_v4()
+              constraints:
+                primaryKey: true
+                nullbale: false
+          - column:
+              name: asset_type_id
+              type: uuid
+              constraints:
+                nullable: false
+          - column:
+              name: comment
+              type: text
+          - column:
+              name: request_id
+              type: uuid
+              constraints:
+                nullable: false
+                foreignKeyName: fk_request
+                references: asset_requests.request(id)
+

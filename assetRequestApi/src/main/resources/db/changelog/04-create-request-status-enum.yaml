@@ -1,0 +1,11 @@
+databaseChangeLog:
+- changeSet:
+    id: 20200716_01
+    author: tsheppard01
+    changes:
+    - sql:
+      comment: create the request_status enum type
+      sql: CREATE TYPE request_status AS ENUM ('IN_PROGRESS', 'SUBMITTED', 'COMPLETED', 'REJECTED');
+    - rollback:
+        comment: drop the request_status type
+        sql: DROP TYPE request_status;

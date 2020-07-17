@@ -1,0 +1,19 @@
+databaseChangeLog:
+- include:
+    relativeToChangelogFile: true
+    file: 01-create-schema.yaml
+- include:
+    relativeToChangelogFile: true
+    file: 02-create-roles.yaml
+- include:
+    relativeToChangelogFile: true
+    file: 03-enable-uuid.yaml
+- include:
+    relativeToChangelogFile: true
+    file: 04-create-request-status-enum.yaml
+- include:
+    relativeToChangelogFile: true
+    file: 05-create-request.yaml
+- include:
+    relativeToChangelogFile: true
+    file: 06-create-request-item.yaml

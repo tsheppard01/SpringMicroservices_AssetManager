@@ -2,7 +2,7 @@ FROM postgres:13
 
 USER $POSTGRES_USER
 
-RUN mkdir -p /data/dbdata
+RUN mkdir -p /pgdata/dbdata
 
-RUN chown -R postgres /data
-RUN chmod 700 /data
+RUN chown -R postgres /pgdata
+RUN chmod 700 /pgdata

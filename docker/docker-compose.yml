@@ -12,4 +12,20 @@ services:
       POSTGRES_USER: "$ASSETS_DB_USERNAME"
       POSTGRES_PASSWORD: "$ASSETS_DB_PASSWORD"
       POSTGRES_DB: "$ASSETS_DB_NAME"
-      PGDATA: /pgdata/assetsdb
+      PGDATA: /pgdata/dbdata
+    volumes:
+      - ./volumes/assets_db:/pgdata/dbdata
+  asset_requests_db:
+    build:
+      context: "./images/postgres"
+      dockerfile: Dockerfile_postgres
+    container_name: assetrequestsdb
+    ports:
+      - "54322:5432"
+    environment:
+      POSTGRES_USER: "$ASSET_REQUESTS_DB_USERNAME"
+      POSTGRES_PASSWORD: "$ASSET_REQUESTS_DB_PASSWORD"
+      POSTGRES_DB: "$ASSET_REQUESTS_DB_NAME"
+      PGDATA: /pgdata/dbdata
+    volumes:
+      - ./volumes/asset_requests_db:/pgdata/dbdata

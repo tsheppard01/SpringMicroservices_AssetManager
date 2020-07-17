@@ -1,0 +1,12 @@
+databaseChangeLog:
+- changeSet:
+    id: 20200715_3
+    author: tsheppard01
+    changes:
+    - sql:
+      comment: Enable uuid-ossp to allow auto generation of UUID primary keys
+      sql: CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+    - rollback:
+      - sql:
+        comment: Drop the uuid-ossp extension
+        sql: DROP EXTENSION IF EXISTS "uuid-ossp";

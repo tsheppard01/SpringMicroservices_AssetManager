@@ -1,0 +1,32 @@
+databaseChangeLog:
+- changeSet:
+    id: 20200716_2
+    author: tsheppard01
+    changes:
+      - createTable:
+          tableName: request
+          schemaName: asset_requests
+          columns:
+          - column:
+              name: id
+              type: uuid
+              defaultValueComputed: uuid_generate_v4()
+              constraints:
+                primaryKey: true
+                nullable: false
+          - column:
+              name: user_id
+              type: uuid
+              constraints:
+                nullable: false
+          - column:
+              name: status
+              type: request_status
+              constraints:
+                nullable: false
+          - column:
+              name: datetime_created
+              type: datetime
+              defaultValueComputed: now()
+              constraints:
+                nullable: false
