@@ -16,12 +16,20 @@ import java.util.UUID;
 @TypeDef(name = "pgsql_enum", typeClass = PostgresEnumType.class)
 public class Request {
 
+  public Request() {}
+
   public Request(UUID id, UUID userId, RequestStatus status, Timestamp dateTimeCreated, List<RequestItem> requestItems) {
     this.id = id;
     this.userId = userId;
     this.status = status;
     this.dateTimeCreated = dateTimeCreated;
     this.requestItems = requestItems;
+  }
+
+  public Request(UUID userId, RequestStatus status, Timestamp dateTimeCreated) {
+    this.userId = userId;
+    this.status = status;
+    this.dateTimeCreated = dateTimeCreated;
   }
 
   @Id
@@ -37,7 +45,7 @@ public class Request {
   @Type(type = "pgsql_enum")
   private RequestStatus status;
 
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "datetime_created", nullable = false)
   private Timestamp dateTimeCreated;
 

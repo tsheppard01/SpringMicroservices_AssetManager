@@ -18,8 +18,15 @@ import java.util.UUID;
 @Controller
 public class AssetsController {
 
+  private UUID userId = UUID.fromString("5fd997a7-bb64-4bd0-a213-6e15d76bcfc0");
+
   @Autowired
   private AssetsService assetsService;
+
+  @RequestMapping("/")
+  public ModelAndView index() {
+    return new ModelAndView("index");
+  }
 
   @RequestMapping("/assetTypes")
   public ModelAndView getAllAssetTypes() {

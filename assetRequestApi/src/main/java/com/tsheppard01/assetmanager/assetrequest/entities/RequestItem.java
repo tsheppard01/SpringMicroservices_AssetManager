@@ -10,6 +10,8 @@ import java.util.UUID;
 @Table(name = "request_item")
 public class RequestItem {
 
+  public RequestItem() {}
+
   public RequestItem(UUID id, UUID assetTypeId, String itemComment) {
     this.id = id;
     this.assetTypeId = assetTypeId;

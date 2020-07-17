@@ -46,4 +46,18 @@ public class RequestService {
 
     return addedRequest.getId();
   }
+
+  public UUID createRequest(UUID userId) {
+
+    Request addedRequest = requestRepository
+        .saveAndFlush(
+            new Request(
+                userId,
+                RequestStatus.IN_PROGRESS,
+                Timestamp.valueOf(LocalDateTime.now())
+            )
+        );
+
+    return addedRequest.getId();
+  }
 }
