@@ -1,9 +1,6 @@
 package com.tsheppard01.assetmanager.assetrequest.controllers;
 
-import com.tsheppard01.assetmanager.assetrequest.dto.RequestDto;
-import com.tsheppard01.assetmanager.assetrequest.dto.RequestItemDto;
-import com.tsheppard01.assetmanager.assetrequest.dto.RequestSummaryDto;
-import com.tsheppard01.assetmanager.assetrequest.dto.UuidWrapperDto;
+import com.tsheppard01.assetmanager.assetrequest.dto.*;
 import com.tsheppard01.assetmanager.assetrequest.entities.Request;
 import com.tsheppard01.assetmanager.assetrequest.repository.RequestRepository;
 import com.tsheppard01.assetmanager.assetrequest.services.RequestService;
@@ -49,6 +46,17 @@ public class RequestController {
 
     return new ResponseEntity<>(
         requestService.getRequestDetails(requestId),
+        HttpStatus.OK
+    );
+  }
+
+  @PostMapping("requests/{requestId}/submit")
+  public ResponseEntity<BooleanWrapperDto> submitRequest(@PathVariable(name = "requestId") UUID requestId) {
+
+    return new ResponseEntity<>(
+        new BooleanWrapperDto(
+            requestService.submitRequest(requestId)
+          ),
         HttpStatus.OK
     );
   }

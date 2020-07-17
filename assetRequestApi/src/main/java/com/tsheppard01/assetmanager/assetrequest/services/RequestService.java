@@ -95,4 +95,23 @@ public class RequestService {
           new IllegalArgumentException("Error retrieving request with Id:" + requestId)
       );
   }
+
+  public boolean submitRequest(UUID requestId) {
+
+    boolean success = requestRepository.findById(requestId)
+        .map(r -> {
+          r.setStatus(RequestStatus.SUBMITTED);
+          requestRepository.saveAndFlush(r);
+          return true;
+        })
+    .orElse(false);
+
+    if(success){
+      // could put code here to call on to the request management service to create
+      // a new case for that service
+      // could also emit an async message here to say a request has been submitted
+    }
+
+    return success;
+  }
 }

@@ -55,4 +55,12 @@ public class RequestsController {
 
     return new ModelAndView("redirect:/assetTypes?rid="+requestId);
   }
+
+  @PostMapping("/requests/{requestId}/submit")
+  public ModelAndView submitRequest(@PathVariable(name = "requestId") UUID requestId) {
+
+    requestsService.submitRequest(requestId);
+
+    return new ModelAndView("redirect:/");
+  }
 }

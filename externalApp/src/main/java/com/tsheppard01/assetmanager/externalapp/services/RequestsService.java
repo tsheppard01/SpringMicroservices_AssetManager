@@ -68,7 +68,6 @@ public class RequestsService {
     List<RequestItemDetailsDto> assets = request.getItems().stream()
         .map(i -> {
           AssetTypeDto asset = assetsService.getAssetType(i.getAssetTypeId());
-          System.out.println(asset);
           return new RequestItemDetailsDto(asset.getName(), asset.getCategory(), i.getComment());
         }).collect(Collectors.toList());
 
@@ -79,6 +78,16 @@ public class RequestsService {
             request.getDateTimeCreated(),
             assets
         );
+  }
+
+  public void submitRequest(UUID requestId) {
+
+    Boolean success = restTemplate
+        .postForObject(
+            "http://asset-requests-api/requests/" + requestId + "/submit",
+            null,
+            BooleanWrapperDto.class
+        ).isValue();
   }
 
 }
