@@ -1,13 +1,63 @@
-version: "3"
+version: "3.7"
 services:
 
+  service_discovery:
+    container_name: serviceDiscovery
+    build:
+      context: "../serviceDiscovery"
+      dockerfile: Dockerfile
+    ports:
+      - "18761:8761"
+    expose:
+      - "8761"
+    networks:
+      asset:
+        aliases:
+          - serviceDiscovery
+  
+  external_app:
+    container_name: externalApp
+    build:
+      context: "../externalApp"
+      dockerfile: Dockerfile
+    depends_on:
+      - service_discovery
+    ports:
+      - "8081:8081"
+    environment:
+      eureka.client.serviceUrl.defaultZone: http://serviceDiscovery:8761/eureka
+    networks:
+      - asset
+
+  assets_api:
+    container_name: assetsApi
+    build:
+      context: "../assetApi"
+      dockerfile: Dockerfile
+    depends_on:
+      - service_discovery
+    ports:
+      - "8083:8080"
+    links:
+      - "service_discovery"
+    environment:
+      ASSETS_API_USER_DB_USERNAME: "$ASSETS_API_USER_DB_USERNAME"
+      ASSETS_API_USER_DB_PASSWORD: "$ASSETS_API_USER_DB_PASSWORD"
+      ASSETS_DB_SERVER: "assetsdb:5432"
+      ASSETS_DB_NAME: "$ASSETS_DB_NAME"
+      eureka.client.serviceUrl.defaultZone: http://serviceDiscovery:8761/eureka
+    networks:
+      - asset
+
   assets_db:
+    container_name: assetsdb
     build:
       context: "./images/postgres"
       dockerfile: Dockerfile_postgres
-    container_name: assetsdb
     ports:
       - "54321:5432"
+    expose:
+      - "5432"
     environment:
       POSTGRES_USER: "$ASSETS_DB_USERNAME"
       POSTGRES_PASSWORD: "$ASSETS_DB_PASSWORD"
@@ -15,13 +65,38 @@ services:
       PGDATA: /pgdata/dbdata
     volumes:
       - ./volumes/assets_db:/pgdata/dbdata
+    networks:
+      - asset
+
+  asset_requests_api:
+    container_name: assetRequestsApi
+    build:
+      context: "../assetRequestApi"
+      dockerfile: Dockerfile
+    depends_on:
+      - service_discovery
+    ports:
+      - "8085:8085"
+    expose:
+      - "8085"
+    environment:
+      ASSET_REQUESTS_API_USER_DB_USERNAME: "$ASSET_REQUESTS_API_USER_DB_USERNAME"
+      ASSET_REQUESTS_API_USER_DB_PASSWORD: "$ASSET_REQUESTS_API_USER_DB_PASSWORD"
+      ASSET_REQUESTS_DB_SERVER: "assetrequestsdb:5432"
+      ASSET_REQUESTS_DB_NAME: "$ASSET_REQUESTS_DB_NAME"
+      eureka.client.serviceUrl.defaultZone: http://serviceDiscovery:8761/eureka
+    networks:
+      - asset
+  
   asset_requests_db:
+    container_name: assetrequestsdb
     build:
       context: "./images/postgres"
       dockerfile: Dockerfile_postgres
-    container_name: assetrequestsdb
     ports:
       - "54322:5432"
+    expose:
+      - "5432"
     environment:
       POSTGRES_USER: "$ASSET_REQUESTS_DB_USERNAME"
       POSTGRES_PASSWORD: "$ASSET_REQUESTS_DB_PASSWORD"
@@ -29,3 +104,9 @@ services:
       PGDATA: /pgdata/dbdata
     volumes:
       - ./volumes/asset_requests_db:/pgdata/dbdata
+    networks:
+      - asset
+
+networks:
+  asset:
+    driver: bridge
